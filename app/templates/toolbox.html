@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="row">
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Dashboard <span class="rowTitleHreff">for <a class="rowTitleHreffAnchor" title="Click to change password to give.artiqox.com" href="{{ url_for('register') }}">@{{ current_user.displayname }}</a></span></div><div class="rowBoxContent">
+        
+        <div class="rowBoxRow"><strong>Deposit address:</strong><br>{{ walletid }}</br><img src="https://chart.googleapis.com/chart?cht=qr&chl=artiqox%3A{{ walletid }}&chs=180x180&choe=UTF-8&chld=L|2" class="rowBoxWalletQr" title="QR Code" alt="https://chart.googleapis.com/chart?cht=qr&chl=artiqox%3A{{ walletid }}&chs=180x180&choe=UTF-8&chld=L|2"></div>
+        <div class="rowBoxRow"><strong>Current balance:</strong><br>{{ balance }} AIQ ≈ {{ btc_balance }} BTC ≈ {{ fiat_balance }} USD</div>
+        <div class="rowBoxRow"><strong>About AIQ:</strong><br>Website: <a href="https://www.artiqox.com">https://www.artiqox.com</a><br>Telegram: <a href="https://t.me/{{ telegram_bot_channel }}">https://t.me/{{ telegram_bot_channel }}</a><br>Total AIQ supply: "{{ total_supply }}"<br>Circulating supply: {{ circulating_supply }}<br>Twitter Followers: <a href="https://twitter.com/artiqox">{{ twitter_followers }}</a></div></div>
+        </div></div>
+
+        {% if vouchers_valid %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Vouchers:</div><div class="rowBoxContent">
+        {% for voucher in vouchers_valid %}
+        <div class="rowBoxRow"><p>Voucher <b>{{ voucher.voucher_number }}</b> value: <b>{{ voucher.voucher_amount }}</b>AIQ {{ voucher.comment }}</p></div>
+        {% endfor %}
+        </div></div></div>
+        {% endif %}
+
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Add Withdraw Order</div><div class="rowBoxContent">
+        <div class="rowBoxTtRowNoBottomMarg">{{ wtf.quick_form(form) }}</div></div></div></div>
+
+        {% if planned_ammount > 0 %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Withdraw Orders:</div><div class="rowBoxContent">
+        <div class="rowBoxTtRow">
+        {% if giveaiq_accounttype == "TW-" %}
+        <b>@{{ current_user.displayname }}</b> tweet this text to confirm below orders:<br><textarea id="posttweetta" class="posttweetta" placeholder="{{ tweet }} https://www.artiqox.com">{{ tweet }} https://www.artiqox.com</textarea><div class="posttweetbutcont">
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="{{ tweet }}" data-url="https://www.artiqox.com" data-show-count="false">Tweet</a>
+                             </div>
+        {% endif %}
+        {% if giveaiq_accounttype == "TG-" %}
+        To confirm your orders use your telegram account <b>@{{ giveaiq_displayname }}</b> look for @{{ telegram_bot_name }} and tell him:<br><textarea id="withdraworderstelegram" class="posttelegrama" style="margin-top: 5px; border: 1px solid #ccc; width: 280px;border-radius: 4px; color: initial; text-transform: none; text-indent: 0px; -webkit-appearance: textarea; background-color: white; flex-direction: column; resize: auto; cursor: text; white-space: pre-wrap; overflow-wrap: break-word;" placeholder="{{ tweet }}">{{ tweet }}</textarea><div class="rowBoxRowFormRight"><button class="btn btn-default-multi" id="copy-button" data-clipboard-target="#withdraworderstelegram">Copy</button>
+        <button onclick="window.location.href='https://t.me/{{ telegram_bot_name }}'" class="btn btn-default-multi">Open Telegram</button>
+        </div>
+        {% endif %}
+        </div>
+        {% for withdraw in withdraws %}
+        <div class="rowBoxRow"><p>Withdraw <b>{{ withdraw.amount }}</b> AIQ to wallet: <b>{{ withdraw.target_wallet }}</b></p><p align="center" style="font-size: 14px; line-height: 20px;"><a href="{{ url_for('delete_withdraw', id=withdraw.id) }}">Cancel Order</a></p></div>
+        {% endfor %}
+        </div></div></div>
+        {% endif %}
+<!--
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Add Promo Tweet Order:</div><div class="rowBoxContent">
+        <div class="rowBoxTtRowNoBottomMarg">{{ wtf.quick_form(form2) }}</div>
+        <span id="checkme">
+        <a href="javascript:get_tweet_author('tweet_id','checkme');">Check</a>
+        </span>
+        </div></div></div>
+
+        {% if planned_ammount2 >= 0 and promotedtweets %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Promote Tweet Orders:</div><div class="rowBoxContent">
+        <div class="rowBoxTtRow"><div class="rowBoxForm">
+        {% if giveaiq_accounttype == "TW-" %}
+        <b>@{{ current_user.displayname }}</b> tweet this text to confirm below orders (you have 24h to do so from the moment you add a promoted tweet order):<br><textarea id="posttweetta" class="posttweetta" placeholder="{{ tweet2 }} https://www.artiqox.com">{{ tweet2 }} https://www.artiqox.com</textarea><div class="posttweetbutcont">
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="{{ tweet2 }}" data-url="https://www.artiqox.com" data-show-count="false">Tweet</a>
+                             </div>
+        {% endif %}
+        {% if giveaiq_accounttype == "TG-" %}
+        To confirm your orders (you have 24h to do so from the moment you add a promoted tweet order) use your telegram account <b>@{{ giveaiq_displayname }}</b> look for @{{ telegram_bot_name }} and tell him:<br><textarea id="promoorderstelegram" class="posttelegrama" placeholder="{{ tweet2 }}">{{ tweet2 }}</textarea><div class="rowBoxRowFormRight"><button class="btn btn-default-multi" id="copy-button" data-clipboard-target="#promoorderstelegram">Copy</button>
+        <button onclick="window.location.href='https://t.me/{{ telegram_bot_name }}'" class="btn btn-default-multi">Open Telegram</button>
+        </div>
+        {% endif %}
+        </div></div>
+        {% for promotedtweet in promotedtweets %}
+        <div class="rowBoxTtRow"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Tweet text.</p>&mdash; Author (@ttlogin) <a href="https://twitter.com/artiqox/status/{{ promotedtweet.tweet_id }}?ref_src=twsrc%5Etfw">Date</a></blockquote> </div><div align="center"><p>Price {{ promotedtweet.price }} AIQ</p><a href="{{ url_for('delete_promotedtweet', id=promotedtweet.id) }}">Cancel Order</a>
+        </div>
+        {% endfor %}
+        </div></div></div>
+        {% endif %}
+-->
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Generate Vouchers</div><div class="rowBoxContent">
+        <div class="rowBoxTtRowNoBottomMarg">{{ wtf.quick_form(form3) }}</div></div></div></div>
+
+        {% if planned_ammount3 > 0 %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Vouchers to confirm:</div><div class="rowBoxContent">
+        <div class="rowBoxTtRow"><div class="rowBoxForm">
+        {% if giveaiq_accounttype == "TW-" %}
+        <b>@{{ current_user.displayname }}</b> tweet this text to confirm below vouchers:<br><textarea id="posttweetta" class="posttweetta" placeholder="{{ tweet3 }} https://www.artiqox.com">{{ tweet3 }} https://www.artiqox.com</textarea><div class="posttweetbutcont">
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="{{ tweet3 }}" data-url="https://www.artiqox.com" data-show-count="false">Tweet</a>
+                             </div>
+        {% endif %}
+        {% if giveaiq_accounttype == "TG-" %}
+        To confirm below vouchers use your telegram account <b>@{{ giveaiq_displayname }}</b> look for @{{ telegram_bot_name }} and tell him:<br><textarea id="vouchersordertelegram" class="posttelegrama" placeholder="{{ tweet3 }}">{{ tweet3 }}</textarea><div class="rowBoxRowFormRight"><button class="btn btn-default-multi" id="copy-button" data-clipboard-target="#vouchersordertelegram">Copy</button>
+        <button onclick="window.location.href='https://t.me/{{ telegram_bot_name }}'" class="btn btn-default-multi">Open Telegram</button>
+        </div>
+        {% endif %}
+        </div></div>
+        {% for voucher in vouchers_awaiting %}
+        <div class="rowBoxRow"><p>Voucher <b>{{ voucher.voucher_number }}</b> value: <b>{{ voucher.voucher_amount }}</b></p><p align="center" style="font-size: 14px; line-height: 20px;"><a href="{{ url_for('delete_awaiting_voucher', voucher_number=voucher.voucher_number) }}">Cancel Voucher</a></p></div>
+        {% endfor %}
+        </div></div></div>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

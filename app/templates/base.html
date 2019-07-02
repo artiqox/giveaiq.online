@@ -1,0 +1,405 @@
+{% extends 'bootstrap/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %}
+    {% if title %}{{ title }} - GiveAIQ{% else %}Welcome to GiveAIQ{% endif %}
+{% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">GiveAIQ</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+					<li><a href="{{ url_for('toolbox') }}">Toolbox</a></li>
+                    <li><a href="{{ url_for('faq') }}">FAQ</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+<style type="text/css">
+* {
+    box-sizing: border-box;
+}
+
+/* Create four equal columns that floats next to each other */
+.column {
+    display: inline-block;
+    margin: 0 auto;    
+    min-width: 330px;
+    padding: 5px;
+    height: 420px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+@media screen and (max-width: 600px) {
+    .column {
+        width: 100%;
+    }
+}
+.row {
+    margin-bottom: 35px;
+    display: inline-block;
+    min-width: 350px;
+    text-align: center;
+}
+.row_single {
+    margin-bottom: 35px;
+    min-width: 350px;
+    text-align: center;
+}
+.rowBox {
+    display:inline-block;
+    box-align: center;
+    border-radius: 8px;
+    border: 1px solid;
+    border-color: #A4D9F9;
+    border-image: none;
+    line-height: 20px;
+    box-shadow: 0px 0px 0px 1px #A4D9F9;
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+    height: 400px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 300px;
+
+}
+.rowBoxNext {
+    box-align: center;
+    border-radius: 8px;
+    border: 1px solid;
+    border-color: #A4D9F9;
+    border-image: none;
+    line-height: 20px;
+    box-shadow: 0px 0px 0px 1px #A4D9F9;
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+    height: 400px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 310px;
+}
+.rowBoxFaqNext {
+    box-align: center;
+    border-radius: 8px;
+    border: 1px solid;
+    border-color: #A4D9F9;
+    border-image: none;
+    line-height: 20px;
+    box-shadow: 0px 0px 0px 1px #A4D9F9;
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+    height: 400px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 300px;
+}
+.rowBoxTitle {
+    text-align: left;
+    padding: 10px;
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 24px;
+    color: #292F33;
+    border-bottom: 1px solid rgba(15,70,100,.12);
+}
+.rowTitleHreff {
+    color: #8899A6;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    font: normal normal 12px/1.4 Helvetica,Roboto,"Segoe UI",Calibri,sans-serif;
+}
+.rowTitleHreffAnchor {
+    color: #2b7bb9;
+}
+.rowBoxContent {
+    height: 300px;
+    overflow-y: auto;
+    width: 298px;
+    /* border: 5px solid red; */
+    overflow-x: hidden;
+    /* border-top: 1px solid rgba(15,70,100,.12); */
+    border-bottom: 1px solid rgba(15,70,100,.12);
+
+}
+.rowBoxFooter {
+    padding: 15px;
+    font-size: 12px;
+}
+.rowBoxFooterLeft {
+    color: #2b7bb9;
+    text-decoration: none;
+    outline: 0;
+    float: left!important;
+}
+.rowBoxFooterRight {
+    color: #2b7bb9;
+    text-decoration: none;
+    outline: 0;
+    float: right!important;
+}
+.rowBoxTelegramContent {
+    height: 300px;
+    overflow-y: hidden;
+    width: 298px;
+    /* border: 5px solid red; */
+    overflow-x: hidden;
+    /* border-top: 1px solid rgba(15,70,100,.12); */
+    border-bottom: 1px solid rgba(15,70,100,.12);
+    margin-top: -2px;
+}
+.cursor-pointer {
+    display:none;
+}
+.rowBoxRow {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    position: relative;
+    border-bottom: 1px solid rgba(15,70,100,.12);
+    padding: 10px;
+
+}
+.rowBoxRowForm {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    position: relative;
+    border-bottom: 1px solid rgba(15,70,100,.12);
+    padding: 10px;
+    padding-bottom: 45px;
+}
+.rowBoxRowFormRight {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    position: relative;
+
+    padding: 10px;
+
+    float: right;
+}
+.rowBoxRowFaq {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    position: relative;
+    border-bottom: 1px solid rgba(15,70,100,.12);
+    padding: 10px;
+    text-align: left;
+}
+
+.rowBoxTtRow {
+    padding-bottom: 50px;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    position: relative;
+    border-bottom: 1px solid rgba(15,70,100,.12);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.rowBoxTtRowNoBottomMarg {
+    padding-bottom: 50px;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.rowBoxTtRowGiveButton {
+    overflow: auto;
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.rowBoxTtRowGiveButtonPicture {
+    width: 20px;
+    height: 20px;
+}
+.rowBoxWalletQr {
+    width: 80px;
+    height: 80px;
+}
+.posttweetta {
+    height: 150px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    width: 254px;
+    border-radius: 4px;
+    color: initial;
+    text-transform: none;
+    text-indent: 0px;
+    -webkit-appearance: textarea;
+    background-color: white;
+    flex-direction: column;
+    resize: auto;
+    cursor: text;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+.posttelegrama {
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    width: 254px;
+    border-radius: 4px;
+    color: initial;
+    text-transform: none;
+    text-indent: 0px;
+    -webkit-appearance: textarea;
+    background-color: white;
+    flex-direction: column;
+    resize: auto;
+    cursor: text;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+.posttweetbutcont {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.rowBoxTtRowGiverButtons {
+    display: inline-block;
+}
+.btn-default {
+    color: white;
+    background-color: #1b95e0;
+    border-color: #ccc;
+    float: right;
+}
+.btn-default-multi {
+    color: white;
+    background-color: #1b95e0;
+    border-color: #ccc;
+}
+.btn-footer {
+    background-color:#ffffff;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border-radius:6px;
+    display:inline-block;
+    cursor:pointer;
+    color:#1b95e0;
+    font-family:Arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+}
+.btn-footer:hover {
+    background-color:#ffffff;
+}
+.btn-footer:active {
+    position:relative;
+    top:1px;
+}
+.panel-default {
+    border-color: white;
+}
+</style>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+<footer>
+<div style="background: white; position: fixed; bottom: 0px; left: 0px; height: 20px; width: 100%"><p align="center">Beta Version - use at own risk!</p><a href=" https://seal.beyondsecurity.com/vulnerability-scanner-verification/inetics.no-ip.org"><img src=" https://seal.beyondsecurity.com/verification-images/inetics.no-ip.org/vulnerability-scanner-8.gif"> alt="Vulnerability Scanner" border="0" /></a></div>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"></script>
+    <script src="{{ url_for('static', filename='js/giveaiq.js') }}"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script type="text/javascript">
+   if (document.getElementById('posttweetta') !=null) {document.getElementById("posttweetta").oninput = function() {
+   document.getElementById("tweeterRain").href="https://twitter.com/intent/tweet?text=" + document.getElementById("posttweetta").value; 
+   return false;
+   }}
+</script>
+    <script>
+        function translate(sourceElem, destElem, sourceLang, destLang) {
+            $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+            $.post('/translate', {
+                text: $(sourceElem).text(),
+                source_language: sourceLang,
+                dest_language: destLang
+            }).done(function(response) {
+                $(destElem).text(response['text'])
+            }).fail(function() {
+                $(destElem).text("Error: Could not contact server.");
+            });
+        }
+    </script>
+    <script>(function(){
+    new Clipboard('#copy-button');
+    })();</script>
+{% endblock %}
+
+  </body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

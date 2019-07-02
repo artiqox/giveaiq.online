@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="row_single">
+        <div class="column">
+        {% if confirm_my_stuff != "" %}
+        <div class="rowBox"><div class="rowBoxTitle">{{ title }}</div>
+        {% if giveaiq_accounttype == "TW-" %}
+        <div class="rowBoxContent">Use your twitter account <b>@{{ giveaiq_displayname }}</b> and tweet:<br><textarea id="posttweetta" class="posttweetta" style="margin-top: 5px; border: 1px solid #ccc; width: 280px;border-radius: 4px; color: initial; text-transform: none; text-indent: 0px; -webkit-appearance: textarea; background-color: white; flex-direction: column; resize: auto; cursor: text; white-space: pre-wrap; overflow-wrap: break-word;" placeholder="{{ confirm_my_stuff }} https://www.artiqox.com">{{ confirm_my_stuff }} https://www.artiqox.com</textarea><div class="posttweetbutcont" style="float:right;margin-top:10px;margin-right:10px;">
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="{{ confirm_my_stuff }}" data-url="https://www.artiqox.com" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div></div>
+        {% endif %}
+        {% if giveaiq_accounttype == "TG-" %}
+        <div class="rowBoxContent">Use your telegram account <b>@{{ giveaiq_displayname }}</b> look for @{{ telegram_bot_name }} and tell him:<br><textarea id="posttelegram" class="posttweetta" style="margin-top: 5px; border: 1px solid #ccc; width: 280px;border-radius: 4px; color: initial; text-transform: none; text-indent: 0px; -webkit-appearance: textarea; background-color: white; flex-direction: column; resize: auto; cursor: text; white-space: pre-wrap; overflow-wrap: break-word;" placeholder="{{ confirm_my_stuff }}">{{ confirm_my_stuff }}</textarea><div class="rowBoxRowFormRight"><button class="btn btn-default-multi" id="copy-button" data-clipboard-target="#posttelegram">Copy</button>
+        <button onclick="window.location.href='https://t.me/{{ telegram_bot_name }}'" class="btn btn-default-multi">Open Telegram</button>
+        </div></div>
+        {% endif %}
+        </div>
+        {% else %}
+            <div id="registerBox" class="rowBox">
+                <div class="rowBoxTitle">Register <span class="rowTitleHreff">to <a class="rowTitleHreffAnchor" href="#">@GiveAIQ</a></span></div>
+                <div class="rowBoxContent">
+                    <div class="panel-group" id="registeraccordion">
+                        <div class="panel panel-default">
+                            <div id="registercollapse1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="rowBoxForm">{{ wtf.quick_form(form_registrationTwitter) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div id="registercollapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="rowBoxForm">{{ wtf.quick_form(form_registrationTelegram) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rowBoxFooter">
+                    <a data-toggle="collapse" data-parent="#registeraccordion" href="#registercollapse1" class="rowBoxFooterLeft">Twitter</a>
+                    <a data-toggle="collapse" data-parent="#registeraccordion" href="#registercollapse2" class="rowBoxFooterRight">Telegram</a>
+                </div>
+            </div>
+        {% endif %}
+    </div></div>
+{% endblock %}

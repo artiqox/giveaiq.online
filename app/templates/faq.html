@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="row">
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">What is Artiqox?</div>
+        <div class="rowBoxRowFaq">Artiqox is team of people that loves crypto, find more on <a href="https://www.artiqox.com">www.artiqox.com</a></div>
+        <div class="rowBoxTitle">What is @GiveAIQ ?</div>
+        <div class="rowBoxRowFaq">@GiveAIQ is twitter bot that allows twitter users to give and receive cryptocurrency AIQ from <a href="https://www.artiqox.com">www.artiqox.com</a></div>
+        <div class="rowBoxTitle">What is AIQ ?</div>
+        <div class="rowBoxRowFaq">AIQ is our cryptocurrency, we believe it's the best cryptocurrency!</div>
+        </div></div>
+        <div class="column"><div class="rowBoxFaqNext"><div class="rowBoxTitle">Why do I need to register ?</div>
+        <div class="rowBoxRowFaq">You don't need to register to receive or to give money on twitter ! You register on <a href="{{ webserviceurl }}">{{ webserviceurl }}</a> only if you want to check your balance/deposit address or to withdraw your funds to AIQ wallet/exchange.</div>
+        <div class="rowBoxTitle">How do I register?</div>
+        <div class="rowBoxRowFaq">Go to <a href="{{ webserviceurl }}/register">{{ webserviceurl }}/register</a> and provide your twitter account. Set a password, this is not your twitter password, this will be your password to access <a href="{{ webserviceurl }}">{{ webserviceurl }}</a>. After you press submit on the registration form we ask you to tweet some text. This step is necessary for us to verify that you are the twitter account owner.</div>
+        </div></div>
+        <div class="column"><div class="rowBoxFaqNext"><div class="rowBoxTitle">Is it safe?</div>
+        <div class="rowBoxRowFaq">Well we made sure it is but this is crypto world so you know, you need to keep it safe. You need your twitter account to give or to withdraw. This means that if hacker breaks in to your give.artiqox.com account he cant take your money! He needs to hack your twitter to do so, which means your twitter security is a main factor here. Please set up strong password and enable 2FA there, for more info see: <a href="https://help.twitter.com/en/managing-your-account/two-factor-authentication">https://help.twitter.com/en/managing-your-account/two-factor-authentication</a></div>
+        </div></div>
+        <div class="column"><div class="rowBoxFaqNext"><div class="rowBoxTitle">How to give money with @GiveAIQ ?</div>
+        <div class="rowBoxRowFaq">To give money on twitter:<br>
+        <ul><li>Reply to any tweet with "@GiveAIQ 1.5" to give it's author 1.5 AIQ</li><li>Reply to any tweet with "@GiveAIQ 1.5 USD" to give it's author AIQ worth of 1.5 USD.</li><li>Tweet "@GiveAIQ @user 1.5 EUR" to give @user 1.5 EUR.</li></ul>
+        Use any ticker like EUR, GBP, BTC, ... if no matching currency or no ticker at all the amount will be in #AIQ.
+        You can add more text to your tweet, for example "@GiveAIQ 1 USD this is great news, thanks for letting me know".</div>
+        </div></div>
+        <div class="column"><div class="rowBoxFaqNext"><div class="rowBoxTitle">What is #cryptorain?</div>
+        <div class="rowBoxRowFaq">To give AIQ to multiple users in one go you can rain them. On the main page you will find a box with predefined #cryptorain syntax. List of users is randomly chosen (every time you open the main page) from GiveAIQ registered users.</div>
+        </div></div>
+        <div class="column"><div class="rowBoxFaqNext"><div class="rowBoxTitle">What is #cryptovoucher?</div>
+        <div class="rowBoxRowFaq">Vouchers are unique crypto service offered to GiveAIQ users. You can create vouchers in toolbox and then share it with your friends/family/business partners. They can then make use of the funds by transferring it to their wallets or donating to people in need. For now vouchers do not expire, however we are continuously working on the service and maybe in future we will auto donate the vouchers after certain time.</div>
+        </div></div>
+        <div class="column"><div class="rowBoxFaqNext"><div class="rowBoxTitle">What are promoted tweets?</div>
+        <div class="rowBoxRowFaq">GiveAIQ service allows users to promote tweets so its easy to donate the money to tweet authors. There are 3 categories of promoted tweets:<ul><li>Charity - only approved charities can use this category (contact us on telegram to get approval).</li><li>Help - anyone who seeks for help can use it, artiqox does not verify those.</li><li>Appreciate - tweets with nice content, donate to the author if you like it.</li></ul>You dont need to be author of the tweet to promote it, however author needs to register on GiveAIQ and allow promoting in edit profile page.</div>
+        </div></div>
+    </div>
+{% endblock %}

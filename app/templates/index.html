@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="row">
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Dashboard <span class="rowTitleHreff">for 
+        {% if current_user.is_anonymous %}
+        <a class="rowTitleHreffAnchor" href="{{ url_for('login') }}">Login</a>
+        {% else %}
+        <a class="rowTitleHreffAnchor" title="Edit Profile" href="{{ url_for('edit_profile') }}">@{{ current_user.displayname }}</a>
+        {% endif %}
+        </span></div><div class="rowBoxContent">
+        {% if walletid %}
+        <div class="rowBoxRow"><strong>Deposit address:</strong><br>{{ walletid }}</br><img src="https://chart.googleapis.com/chart?cht=qr&chl=artiqox%3A{{ walletid }}&chs=180x180&choe=UTF-8&chld=L|2" class="rowBoxWalletQr" title="QR Code" alt="https://chart.googleapis.com/chart?cht=qr&chl=artiqox%3A{{ walletid }}&chs=180x180&choe=UTF-8&chld=L|2"></div>
+        <div class="rowBoxRow"><strong>Current balance:</strong><br>{{ balance }} AIQ ≈ {{ btc_balance }} BTC ≈ {{ fiat_balance }} USD</div>
+        {% for giveaiq_stat in giveaiq_stats %}
+        <div class="rowBoxRow"><strong>You gave:</strong><br>{{ giveaiq_stat.total_gives_amount }} AIQ in total {{ giveaiq_stat.total_gives_number }} donations<br>{{ amount_gives }} AIQ in last {{ transactions_gives }} donations</div>
+        <div class="rowBoxRow"><strong>You received:</strong><br>{{ giveaiq_stat.total_received_amount }} AIQ in total {{ giveaiq_stat.total_received_number }} donations<br>{{ amounnt_receives }} AIQ in last {{ transactions_receives }} donations</div>
+        {% endfor %}
+        {% endif %}
+        <div class="rowBoxRow"><strong>About AIQ:</strong><br>Website: <a href="https://www.artiqox.com">https://www.artiqox.com</a><br>Telegram: <a href="https://t.me/{{ telegram_bot_channel }}">https://t.me/{{ telegram_bot_channel }}</a><br>Total AIQ supply: "{{ total_supply }}"<br>Circulating supply: {{ circulating_supply }}<br>Twitter Followers: <a href="https://twitter.com/artiqox">{{ twitter_followers }}</a></div></div>
+        {% if current_user.is_anonymous %}
+        <footer class="rowBoxFooter"><a class="rowBoxFooterLeft" href="{{ url_for('login') }}">Login</a><a class="rowBoxFooterRight" href="{{ url_for('register') }}">Register</a></footer>
+        {% else %}
+        <footer class="rowBoxFooter"><a class="rowBoxFooterLeft" href="{{ url_for('edit_profile') }}">Edit Profile</a><a class="rowBoxFooterRight" href="{{ url_for('register') }}">Change Password</a></footer>
+        {% endif %}
+        </div></div>
+
+        {% if promotedtweets %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Appreciate <span class="rowTitleHreff">with <a class="rowTitleHreffAnchor" href="https://twitter.com/GiveAIQ">@GiveAIQ</a>
+        </span></div><div class="rowBoxContent">
+        {% for promotedtweet in promotedtweets %}
+        <div class="rowBoxTtRow"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Tweet text.</p>&mdash; Author (@ttlogin) <a href="https://twitter.com/artiqox/status/{{ promotedtweet.tweet_id }}?ref_src=twsrc%5Etfw">Date</a></blockquote> <div><div align="center">Tweet Received: {{ promotedtweet.total_received_amount }} AIQ in {{ promotedtweet.total_received_number }} donations</div><div align="center">Give:</div><div class="rowBoxTtRowGiverButtons">
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=This is great man, thanks for sharing! @GiveAIQ 0.01 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.01$<br><img src="/static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.01$ to the author of the above tweet" alt="Give 0.01$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=This is great man, thanks for sharing! @GiveAIQ 0.05 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.05$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.05$ to the author of the above tweet" alt="Give 0.05$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=This is great man, thanks for sharing! @GiveAIQ 0.10 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.10$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.10$ to the author of the above tweet" alt="Give 0.10$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=This is great man, thanks for sharing! @GiveAIQ 0.25 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.25$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.25$ to the author of the above tweet" alt="Give 0.25$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=This is great man, thanks for sharing! @GiveAIQ 0.50 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.50$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.50$ to the author of the above tweet" alt="Give 0.50$"></a></div>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+        </div></div></div>
+        {% endif %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">#cryptovoucher <span class="rowTitleHreff">transfer to:
+        </span></div><div class="rowBoxContent">
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div id="collapse1" class="panel-collapse collapse in">
+            <div class="panel-body"><div class="rowBoxRowForm">{{ wtf.quick_form(form_VoucherToWallet) }}</div></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body"><div class="rowBoxRowForm">{{ wtf.quick_form(form_VoucherToTwitter) }}</div></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body"><div class="rowBoxRowForm">{{ wtf.quick_form(form_VoucherToTelegram) }}</div></div>
+        </div>
+    </div>
+</div>
+
+        </div><div class="rowBoxFooter">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="rowBoxFooterLeft">Wallet</a>
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Twitter</a>
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="rowBoxFooterRight">Telegram</a>
+</div></div></div>
+        {% if charitytweets %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Charity <span class="rowTitleHreff">with <a class="rowTitleHreffAnchor" href="https://twitter.com/GiveAIQ">@GiveAIQ</a>
+        </span></div><div class="rowBoxContent">
+        {% for promotedtweet in charitytweets %}
+        <div class="rowBoxTtRow"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Tweet text.</p>&mdash; Author (@ttlogin) <a href="https://twitter.com/artiqox/status/{{ promotedtweet.tweet_id }}?ref_src=twsrc%5Etfw">Date</a></blockquote> <div align="center"><div>Tweet Received: {{ promotedtweet.total_received_amount }} AIQ in {{ promotedtweet.total_received_number }} donations</div><div>Give:</div><div class="rowBoxTtRowGiverButtons">
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.01 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.01$<br><img src="/static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.01$" alt="Give 0.01$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.05 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.05$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.05$" alt="Give 0.05$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.10 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.10$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.10$" alt="Give 0.10$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.25 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.25$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.25$" alt="Give 0.25$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.50 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.50$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.50$" alt="Give 0.50$"></a></div>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+        </div></div></div>
+        {% endif %}
+        {% if helptweets %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Help <span class="rowTitleHreff">with <a class="rowTitleHreffAnchor" href="https://twitter.com/GiveAIQ">@GiveAIQ</a>
+        </span></div><div class="rowBoxContent">
+        {% for promotedtweet in helptweets %}
+        <div class="rowBoxTtRow"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Tweet text.</p>&mdash; Author (@ttlogin) <a href="https://twitter.com/artiqox/status/{{ promotedtweet.tweet_id }}?ref_src=twsrc%5Etfw">Date</a></blockquote> <div align="center"><div>Tweet Received: {{ promotedtweet.total_received_amount }} AIQ in {{ promotedtweet.total_received_number }} donations</div><div>Give:</div><div class="rowBoxTtRowGiverButtons">
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.01 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.01$<br><img src="/static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.01$" alt="Give 0.01$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.05 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.05$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.05$" alt="Give 0.05$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.10 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.10$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.10$" alt="Give 0.10$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.25 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.25$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.25$" alt="Give 0.25$"></a></div>
+        <div class="rowBoxTtRowGiveButton"><a href="https://twitter.com/intent/tweet?text=Please accept that small donation, have a nice day @GiveAIQ 0.50 USD&in_reply_to={{ promotedtweet.tweet_id }}">0.50$<br><img src="static/images/give_money.png" class="rowBoxTtRowGiveButtonPicture" title="Give 0.50$" alt="Give 0.50$"></a></div>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+        </div></div></div>
+        {% endif %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">Telegram <span class="rowTitleHreff">with <a class="rowTitleHreffAnchor" href="https://t.me/{{ telegram_bot_channel }}">@Artiqox</a>
+        </span></div><div class="rowBoxTelegramContent">
+        <iframe id="tgw_5bd1e0a583ba88f44e8b456a" frameborder="0" scrolling="no" horizontalscrolling="no" verticalscrolling="no" width="100%" height="362px" async></iframe><script>document.addEventListener("DOMContentLoaded", function () {document.getElementById("tgw_5bd1e0a583ba88f44e8b456a").setAttribute("src", "https://tgwidget.com/widget/?id=5bd1e0a583ba88f44e8b456a")})</script>
+        </div><footer class="rowBoxFooter"><a class="rowBoxFooterLeft" href="https://t.me/{{ telegram_bot_channel }}">Join</a></footer></div></div>
+        {% if tweet_rain != "None" and telegram_rain != "None" %}
+        <div class="column"><div class="rowBox"><div class="rowBoxTitle">#cryptorain <span class="rowTitleHreff">with <a class="rowTitleHreffAnchor" href="#">@GiveAIQ</a>
+        </span></div><div class="rowBoxContent">
+        <div class="panel-group" id="rainaccordion">
+    <div class="panel panel-default">
+        <div id="raincollapse1" class="panel-collapse collapse in">
+            <div class="panel-body"><div class="rowBoxForm"><textarea id="posttweetta" class="posttweetta" placeholder="{{ tweet_rain }} https://www.artiqox.com">{{ tweet_rain }} https://www.artiqox.com</textarea><div class="rowBoxRowFormRight">
+        <a href="https://twitter.com/intent/tweet?text={{ tweet_rain }}" id="tweeterRain"><button class="btn btn-default-multi">Tweet</button></a>
+        </div>
+        </div></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div id="raincollapse2" class="panel-collapse collapse">
+            <div class="panel-body"><div class="rowBoxForm"><textarea id="posttelegram" class="posttweetta" placeholder="{{ telegram_rain }} https://t.me/{{ telegram_bot_channel }}">{{ telegram_rain }}</textarea><div class="rowBoxRowFormRight"><button class="btn btn-default-multi" id="copy-button" data-clipboard-target="#posttelegram">Copy</button>
+        <button onclick="window.location.href='https://t.me/{{ telegram_bot_channel }}'" class="btn btn-default-multi">Open Telegram</button>
+        </div>
+        </div></div>
+        </div>
+    </div></div>
+</div><div class="rowBoxFooter">
+        <a data-toggle="collapse" data-parent="#rainaccordion" href="#raincollapse1" class="rowBoxFooterLeft">Twitter</a>
+        
+        <a data-toggle="collapse" data-parent="#rainaccordion" href="#raincollapse2" class="rowBoxFooterRight">Telegram</a>
+</div></div></div>
+        {% endif %}
+        <div class="column"><div id="tweetHolder" class="rowBoxFaqNext">
+        <a class="twitter-timeline" data-width="295" data-height="390" href="https://twitter.com/artiqox?ref_src=twsrc%5Etfw">Tweets by artiqox</a></div></div>
+        <div class="column"><div class="rowBoxFaqNext">
+        <a class="twitter-timeline" data-width="295" data-height="390" href="https://twitter.com/GiveAIQ?ref_src=twsrc%5Etfw">Tweets by GiveAIQ</a></div></div>
+        {% if current_user.username and giveaiq_accounttype == "TW-" %}
+        <div class="column"><div class="rowBoxFaqNext">
+        <a class="twitter-timeline" data-width="295" data-height="390" href="https://twitter.com/{{ current_user.displayname }}?ref_src=twsrc%5Etfw">Tweets by {{ current_user.displayname }}</a></div></div>
+        {% endif %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="row_single">
+        <div class="column">
+        {% if confirm_my_stuff != "" %}
+        <div class="rowBox"><div class="rowBoxTitle">{{ title }}</div>
+        {% if giveaiq_accounttype == "TW-" %}
+        <div class="rowBoxContent">Use your twitter account <b>@{{ giveaiq_displayname }}</b> and tweet:<br><textarea id="posttweetta" class="posttweetta" style="margin-top: 5px; border: 1px solid #ccc; width: 280px;border-radius: 4px; color: initial; text-transform: none; text-indent: 0px; -webkit-appearance: textarea; background-color: white; flex-direction: column; resize: auto; cursor: text; white-space: pre-wrap; overflow-wrap: break-word;" placeholder="{{ confirm_my_stuff }} https://www.artiqox.com">{{ confirm_my_stuff }} https://www.artiqox.com</textarea><div class="posttweetbutcont" style="float:right;margin-top:10px;margin-right:10px;">
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="{{ confirm_my_stuff }}" data-url="https://www.artiqox.com" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div></div>
+        {% endif %}
+        {% if giveaiq_accounttype == "TG-" %}
+        <div class="rowBoxContent">Use your telegram account <b>@{{ giveaiq_displayname }}</b> look for @{{ telegram_bot_name }} and tell him:<br><textarea id="posttelegram" class="posttweetta" style="margin-top: 5px; border: 1px solid #ccc; width: 280px;border-radius: 4px; color: initial; text-transform: none; text-indent: 0px; -webkit-appearance: textarea; background-color: white; flex-direction: column; resize: auto; cursor: text; white-space: pre-wrap; overflow-wrap: break-word;" placeholder="{{ confirm_my_stuff }}">{{ confirm_my_stuff }}</textarea><div class="rowBoxRowFormRight"><button class="btn btn-default-multi" id="copy-button" data-clipboard-target="#posttelegram">Copy</button>
+        <button onclick="window.location.href='https://t.me/{{ telegram_bot_name }}'" class="btn btn-default-multi">Open Telegram</button>
+        </div></div>
+        {% endif %}
+        </div>
+        {% else %}
+
+            <div id="loginBox" class="rowBox">
+                <div id="loginBoxTitleTwitter" class="rowBoxTitle">Login <span class="rowTitleHreff">with <a href="#" onclick="replace_rowBox_divs('loginBoxTitleTelegram','loginBoxTitleTwitter','loginBoxContentTelegram','loginBoxContentTwitter','loginBoxFooterTelegram','loginBoxFooterTwitter')">@Twitter</a> <a href="#" onclick="replace_rowBox_divs('loginBoxTitleTwitter','loginBoxTitleTelegram','loginBoxContentTwitter','loginBoxContentTelegram','loginBoxFooterTwitter','loginBoxFooterTelegram')">@Telegram</a></span></div>
+
+                <div id="loginBoxTitleTelegram" class="rowBoxTitle" style="display:none">Login <span class="rowTitleHreff">with <a href="#" onclick="replace_rowBox_divs('loginBoxTitleTwitter','loginBoxTitleTelegram','loginBoxContentTwitter','loginBoxContentTelegram','loginBoxFooterTelegram','loginBoxFooterTwitter')">@Telegram</a> <a href="#" onclick="replace_rowBox_divs('loginBoxTitleTelegram','loginBoxTitleTwitter','loginBoxContentTelegram','loginBoxContentTwitter','loginBoxFooterTwitter','loginBoxFooterTelegram')">@Twitter</a></span></div>
+
+                <div id="registerBoxTitleTwitter" class="rowBoxTitle" style="display:none">Register <span class="rowTitleHreff">with <a href="#" onclick="replace_rowBox_divs('registerBoxTitleTelegram','registerBoxTitleTwitter','registerBoxContentTelegram','registerBoxContentTwitter','registerBoxFooterTelegram','registerBoxFooterTwitter')">@Twitter</a> <a href="#" onclick="replace_rowBox_divs('registerBoxTitleTwitter','registerBoxTitleTelegram','registerBoxContentTwitter','registerBoxContentTelegram','registerBoxFooterTwitter','registerBoxFooterTelegram')">@Telegram</a></span></div>
+
+                <div id="registerBoxTitleTelegram" class="rowBoxTitle" style="display:none">Register <span class="rowTitleHreff">with <a href="#" onclick="replace_rowBox_divs('registerBoxTitleTwitter','registerBoxTitleTelegram','registerBoxContentTwitter','registerBoxContentTelegram','registerBoxFooterTwitter','registerBoxFooterTelegram')">@Telegram</a> <a href="#" onclick="replace_rowBox_divs('registerBoxTitleTelegram','registerBoxTitleTwitter','registerBoxContentTelegram','registerBoxContentTwitter','registerBoxFooterTelegram','registerBoxFooterTwitter')">@Twitter</a></span></div>
+
+                <div id="resetBoxTitleTwitter" class="rowBoxTitle" style="display:none">Reset <span class="rowTitleHreff">for <a href="#" onclick="replace_rowBox_divs('resetBoxTitleTelegram','resetBoxTitleTwitter','registerBoxContentTelegram','registerBoxContentTwitter','resetBoxFooterTelegram','resetBoxFooterTwitter')">@Twitter</a> <a href="#" onclick="replace_rowBox_divs('resetBoxTitleTwitter','resetBoxTitleTelegram','registerBoxContentTwitter','registerBoxContentTelegram','resetBoxFooterTwitter','resetBoxFooterTelegram')">@Telegram</a></span></div>
+
+                <div id="resetBoxTitleTelegram" class="rowBoxTitle" style="display:none">Reset <span class="rowTitleHreff">for <a href="#" onclick="replace_rowBox_divs('resetBoxTitleTwitter','resetBoxTitleTelegram','registerBoxContentTwitter','registerBoxContentTelegram','resetBoxFooterTwitter','resetBoxFooterTelegram')">@Telegram</a> <a href="#" onclick="replace_rowBox_divs('resetBoxTitleTelegram','resetBoxTitleTwitter','registerBoxContentTelegram','registerBoxContentTwitter','resetBoxFooterTelegram','resetBoxFooterTwitter')">@Twitter</a></span></div>
+
+                <div id="loginBoxContentTwitter" class="rowBoxContent">
+                    <div class="rowBoxTtRowNoBottomMarg">Login Tweeter
+                    {{ wtf.quick_form(form_LoginFormTwitter) }}
+                    </div>
+                </div>
+
+                <div id="loginBoxContentTelegram" class="rowBoxContent" style="display:none">
+                    <div class="rowBoxTtRowNoBottomMarg">Login Telegram
+                    {{ wtf.quick_form(form_LoginFormTelegram) }}
+                    </div>
+                </div>
+
+                <div id="registerBoxContentTwitter" class="rowBoxContent" style="display:none">
+                    <div class="rowBoxTtRowNoBottomMarg">Register Twitter
+                    {{ wtf.quick_form(form_registrationTwitter) }}
+                    </div>
+                </div>
+
+                <div id="registerBoxContentTelegram" class="rowBoxContent" style="display:none">
+                    <div class="rowBoxTtRowNoBottomMarg">Register Telegram
+                    {{ wtf.quick_form(form_registrationTelegram) }}
+                    </div>
+                </div>
+
+        {% if current_user.is_anonymous %}
+        <footer id="loginBoxFooterTwitter" class="rowBoxFooter">
+        <span tabindex="0" class="rowBoxFooterLeft"><a href="#" onclick="replace_rowBox_divs('loginBoxTitleTwitter','registerBoxTitleTwitter','loginBoxContentTwitter','registerBoxContentTwitter','loginBoxFooterTwitter','registerBoxFooterTwitter')">Register</a></span>
+        <span tabindex="1" class="rowBoxFooterRight"><a href="#" onclick="replace_rowBox_divs('loginBoxTitleTwitter','resetBoxTitleTwitter','loginBoxContentTwitter','registerBoxContentTwitter','loginBoxFooterTwitter','resetBoxFooterTwitter')">Reset Password</a></span>
+        </footer>
+
+        <footer id="loginBoxFooterTelegram" class="rowBoxFooter" style="display:none">
+        <span tabindex="0" class="rowBoxFooterLeft"><a href="#" onclick="replace_rowBox_divs('loginBoxTitleTelegram','registerBoxTitleTelegram','loginBoxContentTelegram','registerBoxContentTelegram','loginBoxFooterTelegram','registerBoxFooterTelegram')">Register</a></span>
+        <span tabindex="1" class="rowBoxFooterRight"><a href="#" onclick="replace_rowBox_divs('loginBoxTitleTelegram','resetBoxTitleTelegram','loginBoxContentTelegram','registerBoxContentTelegram','loginBoxFooterTelegram','resetBoxFooterTelegram')">Reset Password</a></span>
+        </footer>
+
+        <footer id="registerBoxFooterTwitter" class="rowBoxFooter" style="display:none">
+        <span tabindex="0" class="rowBoxFooterLeft"><a href="#" onclick="replace_rowBox_divs('registerBoxTitleTwitter','loginBoxTitleTwitter','registerBoxContentTwitter','loginBoxContentTwitter','registerBoxFooterTwitter','loginBoxFooterTwitter')">Login</a></span>
+        <span tabindex="1" class="rowBoxFooterRight"><a href="#" onclick="replace_rowBox_divs('registerBoxTitleTwitter','resetBoxTitleTwitter','registerBoxContentTwitter','registerBoxContentTwitter','registerBoxFooterTwitter','resetBoxFooterTwitter')">Reset Password</a></span>
+        </footer>
+
+        <footer id="registerBoxFooterTelegram" class="rowBoxFooter" style="display:none">
+        <span tabindex="0" class="rowBoxFooterLeft"><a href="#" onclick="replace_rowBox_divs('registerBoxTitleTelegram','loginBoxTitleTelegram','registerBoxContentTelegram','loginBoxContentTelegram','registerBoxFooterTelegram','loginBoxFooterTelegram')">Login</a></span>
+        <span tabindex="1" class="rowBoxFooterRight"><a href="#" onclick="replace_rowBox_divs('registerBoxTitleTelegram','resetBoxTitleTelegram','registerBoxContentTelegram','registerBoxContentTelegram','registerBoxFooterTelegram','resetBoxFooterTelegram')">Reset Password</a></span>
+        </footer>
+
+        <footer id="resetBoxFooterTwitter" class="rowBoxFooter" style="display:none">
+        <span tabindex="0" class="rowBoxFooterLeft"><a href="#" onclick="replace_rowBox_divs('resetBoxTitleTwitter','loginBoxTitleTwitter','registerBoxContentTwitter','loginBoxContentTwitter','resetBoxFooterTwitter','loginBoxFooterTwitter')">Login</a></span>
+        <span tabindex="1" class="rowBoxFooterRight"><a href="#" onclick="replace_rowBox_divs('resetBoxTitleTwitter','registerBoxTitleTwitter','registerBoxContentTwitter','registerBoxContentTwitter','resetBoxFooterTwitter','registerBoxFooterTwitter')">Register</a></span>
+        </footer>
+
+        <footer id="resetBoxFooterTelegram" class="rowBoxFooter" style="display:none">
+        <span tabindex="0" class="rowBoxFooterLeft"><a href="#" onclick="replace_rowBox_divs('resetBoxTitleTelegram','loginBoxTitleTelegram','registerBoxContentTelegram','loginBoxContentTelegram','resetBoxFooterTelegram','loginBoxFooterTelegram')">Login</a></span>
+        <span tabindex="1" class="rowBoxFooterRight"><a href="#" onclick="replace_rowBox_divs('resetBoxTitleTelegram','registerBoxTitleTelegram','registerBoxContentTelegram','registerBoxContentTelegram','resetBoxFooterTelegram','registerBoxFooterTelegram')">Register</a></span>
+        </footer>
+        {% else %}
+        <footer class="rowBoxFooter">
+        <a class="rowBoxFooterLeft" href="{{ url_for('edit_profile') }}">Edit Profile</a>
+        <span tabindex="0" class="rowBoxFooterRight" onclick="replace_div('loginBoxTitle','registerBoxTitle')">Change Password</span>
+        </footer>
+        {% endif %}
+        </div>
+        {% endif %}
+    </div></div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="row_single">
+        {% if confirm_my_stuff != "" %}
+        <div class="column"><div style="border-radius: 8px; border: 1px solid; border-color: #A4D9F9; border-image: none; line-height: 20px; box-shadow: 0px 0px 0px 1px #A4D9F9; background-color: rgb(255, 255, 255); margin-left: 20px; margin-top: 10px; float:left; height: 400px; padding-top: 5px;padding-bottom: 5px;"><div style="padding: 10px; font-size: 21px; font-weight: 300; line-height: 24px; color: #292F33;">{{ title }}</div>
+        {% if giveaiq_accounttype == "TW-" %}
+        <div style="width: 300px; font-size: 12px; line-height: 18px; font-weight: 400; position: relative; border-top: 1px solid rgba(15,70,100,.12); padding: 10px;">Use your twitter account <b>@{{ giveaiq_displayname }}</b> and tweet:<br><textarea id="posttweetta" class="posttweetta" style="margin-top: 5px; border: 1px solid #ccc; width: 280px;border-radius: 4px; color: initial; text-transform: none; text-indent: 0px; -webkit-appearance: textarea; background-color: white; flex-direction: column; resize: auto; cursor: text; white-space: pre-wrap; overflow-wrap: break-word;" placeholder="{{ confirm_my_stuff }} https://www.artiqox.com">{{ confirm_my_stuff }} https://www.artiqox.com</textarea><div class="posttweetbutcont" style="float:right;margin-top:10px;margin-right:10px;">
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="{{ confirm_my_stuff }}" data-url="https://www.artiqox.com" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div></div>
+        {% endif %}
+        {% if giveaiq_accounttype == "TG-" %}
+        <div style="width: 300px; font-size: 12px; line-height: 18px; font-weight: 400; position: relative; border-top: 1px solid rgba(15,70,100,.12); padding: 10px;">Use your telegram account <b>@{{ giveaiq_displayname }}</b> look for @{{ telegram_bot_name }} and tell him:<br><textarea id="posttweetta" class="posttweetta" style="margin-top: 5px; border: 1px solid #ccc; width: 280px;border-radius: 4px; color: initial; text-transform: none; text-indent: 0px; -webkit-appearance: textarea; background-color: white; flex-direction: column; resize: auto; cursor: text; white-space: pre-wrap; overflow-wrap: break-word;" placeholder="{{ confirm_my_stuff }}">{{ confirm_my_stuff }}</textarea></div>
+        {% endif %}
+        </div></div>
+        {% else %}
+        <div class="column"><div style="border-radius: 8px; border: 1px solid; border-color: #A4D9F9; border-image: none; line-height: 20px; box-shadow: 0px 0px 0px 1px #A4D9F9; background-color: rgb(255, 255, 255); margin-left: 20px; margin-top: 10px; float:left; width: 300px; height: 400px"><div style="padding: 10px; font-size: 21px; font-weight: 300; line-height: 24px; color: #292F33;">{{ title }}</div>
+        <div style="font-size: 12px; line-height: 18px; font-weight: 400; position: relative; border-top: 1px solid rgba(15,70,100,.12); padding: 10px;">{{ wtf.quick_form(form) }}</div></div></div>
+        {% endif %}
+    </div>
+{% endblock %}
