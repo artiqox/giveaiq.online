@@ -1,4 +1,4 @@
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 requests==2.12.4
 Flask_Mail==0.9.1
 Flask_WTF==0.14.2
